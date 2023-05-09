@@ -1,23 +1,28 @@
-import logo from './logo.svg';
 import './App.css';
-
+import Headers from './Headers';
+import Content from './Content';
+import {useEffect,useState} from 'react'
 function App() {
+  const[reqType,setReqType]=useState("users");
+  const[data,setData]=useState([]);
+useEffect(() => {
+
+  const API_URL="https://jsonplaceholder.typicode.com"
+  const fetchData= async()=>{
+    const response= await fetch(`${API_URL}/${reqType}`)
+    const dat=await response.json()
+    setData(dat)
+  }
+  fetchData();
+}, [reqType])
+
+
+
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <Headers setReqType={setReqType}/>
+      <Content data={data}/>
     </div>
   );
 }
